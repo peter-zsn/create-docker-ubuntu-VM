@@ -1,0 +1,66 @@
+﻿sudo mkdir -p /mnt/code && sudo mount -t vboxsf share /mnt/code
+
+docker run -d -v /Users/yy_stu_web_dj/tbkt:/code -p 8000:8099 --entrypoint=python hub.tbkt.cn:5001/django:1.8.7 /code/manage.py runserver 0.0.0.0:8000(端口映射创建容器)
+
+docker create -it --name media --net=host -v /mnt/code/tbkt_media:/tbkt_media 122.114.40.73:5001/django:1.8.7 python /tbkt_media/manage.py runserver 0.0.0.0:808
+
+docker create -it --name nt --net=host -v /mnt/code/tbkt_teacher:/tbkt_teacher 122.114.40.73:5001/django:1.8.7 python /tbkt_teacher/esms/manage.py runserver 0.0.0.0:8072
+
+docker create -it --name ws --net=host -v /mnt/code/tbkt_web_student:/tbkt_web_student 122.114.40.73:5001/django:1.2.3 python /tbkt_web_student/manage.py runserver 0.0.0.0:8000
+
+docker create -it --name wt --net=host -v /mnt/code/tbkt_web_teacher:/tbkt_web_teacher 122.114.40.73:5001/django:1.2.3 python /tbkt_web_teacher/manage.py runserver 0.0.0.0:8071
+
+docker create -t --name api --net=host -v /mnt/code/tbkt_api_student:/tbkt_api_student 122.114.40.73:5001/django:1.2.3 python /tbkt_api_student/manage.py runserver 0.0.0.0:900
+
+docker create -it --name esms --net=host -v /mnt/code/xcp_esms:/xcp_esms 122.114.40.73:5001/django:1.2.3 python /xcp_esms/esms/manage.py runserver 0.0.0.0:700
+
+docker run -it --name cms --net=host -v /mnt/code/tbkt_cms:/tbkt_cms 122.114.40.73:5001/django:1.2.3 python /tbkt_cms/esms/manage.py runserver 0.0.0.0:702
+
+docker run -it --rm --net=host -v /mnt/code/test:/test openoffice:v1 nohup soffice "-accept=socket,port=2002;urp;" &;/opt/openoffice4/program/python /test/DocumentConverter.py /test/a.docx /test/a.html 
+
+docker create -it --name test --net=host -v /mnt/code/tbkt_test/tbkt/:/tbkt_test 122.114.40.73:5001/django:1.8.7 python /tbkt_test/manage.py runserver 0.0.0.0:710
+docker create -it --name jxuser --net=host -v /mnt/code/jiangxi/tbkt_user/tbkt/:/jx_user 122.114.40.73:5001/django:1.8.7 python /jx_user/manage.py runserver 0.0.0.0:800
+docker create -it --name jxt --net=host -v /mnt/code/jiangxi/tbkt_teacher:/jx_teacher 122.114.40.73:5001/django:1.8.7 python /jx_teacher/esms/manage.py runserver 0.0.0.0:802
+docker create -it --name jxs --net=host -v /mnt/code/jiangxi/tbkt_student:/jx_student 122.114.40.73:5001/django:1.8.7 python /jx_student/tbkt/manage.py runserver 0.0.0.0:801
+docker create -it --name jxapi --net=host -v /mnt/code/jiangxi/tbkt_api:/jx_api 122.114.40.73:5001/django:1.8.7 python /jx_api/tbkt/manage.py runserver 0.0.0.0:803
+docker create -it --name jxm --net=host -v /mnt/code/jiangxi/tbkt_media:/jx_media 122.114.40.73:5001/django:1.8.7 python /jx_media/manage.py runserver 0.0.0.0:818
+
+docker create -it --name yys --net=host -v /mnt/code/tbkt_yystudent/tbkt/:/tbkt_yystudent 122.114.40.73:5001/django:1.8.7 python /tbkt_yystudent/manage.py runserver 0.0.0.0:8091
+docker create -it --name ns --net=host -v /mnt/code/tbkt_student:/tbkt_student 122.114.40.73:5001/django:1.8.7 python /tbkt_student/manage.py runserver 0.0.0.0:8000
+
+docker create -it --name xc --net=host -v /mnt/code/xuchang/esms/:/xuchang 122.114.40.73:5001/django:1.8.7 python /xuchang/manage.py runserver 0.0.0.0:901
+docker create -it --name xapi --net=host -v /mnt/code/xcp_api/tbkt/:/xcp_api 122.114.40.73:5001/django:1.8.7 python /xcp_api/manage.py runserver 0.0.0.0:8100
+docker create -it --name apiyy --net=host -v /mnt/code/tbkt_api_yy/tbkt/:/tbkt_api_yy 122.114.40.73:5001/django:1.8.7 python /tbkt_api_yy/manage.py runserver 0.0.0.0:8005
+docker create -it --name hnapi --net=host -v /mnt/code/tbkt_api/tbkt/:/hnapi 122.114.40.73:5001/django:1.8.7 python /hnapi/manage.py runserver 0.0.0.0:4000
+docker create -it --name apisx --net=host -v /mnt/code/tbkt_api_sx/tbkt/:/apisx 122.114.40.73:5001/django:1.8.7 python /apisx/manage.py runserver 0.0.0.0:4001
+
+docker create -it --name hntbkt_student --net=host -v /Users/hn/tbkt_student:/hntbkt_student hub.tbkt.cn:5001/django:1.8.7 python /hntbkt_student/manage.py runserver 0.0.0.0:8100
+
+# 安装openoffice
+http://tecadmin.net/install-apache-openoffice-on-centos-rhel-and-fedora/#
+
+启动soffice服务器
+soffice --headless --accept="socket,host=127.0.0.1,port=8100;urp;"
+
+# 获取镜像
+docker images
+docker pull 122.114.40.73:5001/django:1.8.7
+docker pull 122.114.40.73:5001/django:1.2.3
+
+# 删除镜像
+docker rmi 45951690a66a
+
+# 执行命令
+docker exec -it test bash
+
+# 打标签
+git fetch --tag
+git tag 
+git tag v0.0.01.95 -a -m ""
+git push origin --tag
+
+# 加入被忽略的文件
+git rm --cached xx
+
+批量删除docker容器
+sudo docker rm $(docker ps -a -q)

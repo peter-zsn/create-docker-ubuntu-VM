@@ -1,0 +1,71 @@
+docker 镜像制作，  以ubuntu为例---------------参考文献
+<http://blog.csdn.net/cloud_xy/article/details/52470265>
+
+1: 安装docker 
+sudo apt-get install docker.io
+
+
+2: 下载基础镜像
+sudo docker pull ubuntu:16.04
+
+3: 编写第一个Dockerfile	
+FROM ubuntu:16.04
+MAINTAINER peter <15294627382@163.com>
+LABEL Description="add python3 django2.0.2 from ubuntu:16.04" Version="1.0"
+RUN su
+RUN apt-get update
+RUN apt-get install -y python
+RUN apt-get install -y python-django
+RUN apt-get install -y golang-go
+
+
+
+4：构建第一个基础镜像-----15294627382为要上传到docker hub 的名字
+docker build -t 15294627382/baseos:1.0 .
+
+5: docker images 查看你刚刚创建的镜像------15294627382/baseos:1.0
+
+6:上传并保存你的镜像
+docker push  15294627382/baseos:1.0
+
+
+
+
+(在基础镜像上创建镜像)------参考文档<http://blog.csdn.net/u011851478/article/details/52136420>
+1. 下载基础镜像
+docker pull ubuntu:14.04
+
+2.进入docker
+docker run -it ubuntu14:04
+
+3.安装你所需要的环境
+sudo apt-get install -y python 
+
+4.将你刚刚配置的容器转换成你自己所需的镜像
+sudo docker commit -m "提交的说明信息" -a "指定用户信息" b388aa9066b2 peter/ubuntu-django2.0.2:v1
+b388aa9066b2 :    容器id
+peter/ubuntu-django2.0.2:v1：指定目标镜像的用户名、仓库名和 tag 信息
+创建成功后会返回这个镜像的 ID 信息
+
+5.dockers images
+就会出现你刚刚创建的容器的信息,---至此容器在本地创建成功
+
+6.上传并存储镜像----以便于更多人使用---这里是上传到docker hub中
+	6.1 登陆docker
+		docker login
+	
+	6.2 把镜像推到docker hub中
+		docker push peter/ubuntu-django2.0.2:v1
+	
+	
+	注意如果要推倒docker hub中，  镜像的名字必须是 docker用户名/仓库名/tag信息
+	可以使用docker tag 镜像id  新的镜像的名字-------进行名字的修改
+	
+7:登陆到docker hub中即可看到自己刚刚上传成功的镜像
+	
+
+
+
+
+
+

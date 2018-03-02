@@ -1,0 +1,3 @@
+docker-machine start dev
+docker-machine ssh dev "docker start com_api yy_api yy_stu_web yy2_stu_web com_web tea_web media hd_api sx_api sms_api tbkt-wap com_tea bank_api"
+docker-machine ssh dev -L :8090:localhost:8090 -L :8088:localhost:8088 -L :8089:localhost:8089  -L :8091:localhost:8091 -L :8000:localhost:8000 -L :8002:localhost:8002 -L :808:localhost:808  -L :9001:localhost:9001 -L :7000:localhost:7000 -L :9002:localhost:9002  -L :9006:localhost:9006 -L :9003:localhost:9003 -L :9009:localhost:9009

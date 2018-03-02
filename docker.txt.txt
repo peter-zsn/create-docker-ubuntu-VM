@@ -1,0 +1,73 @@
+﻿1: 		打开gitbash
+2:		查看docker镜像的状态：	可查看镜像的ip
+			docker-machine.exe ls
+3：		启动你所需要的镜像
+			docker-machine.exe start dev1
+4:		进入你所需要的镜像
+			docker-machine.exe ssh dev1
+	4.1 第一次启动后，可以设置自动挂载：
+			sudo  vi /var/lib/boot2docker/profile
+				最后一行增加： 
+					sudo mkdir -p /mnt/code && sudo mount -t vboxsf Work /mnt/code
+	4.2 退出重启即可
+
+5：		进入容器并挂载目录
+			docker run -it -v /mnt/code/:/code 122.114.40.73:5001/django:1.8.7 /bin/bash
+			docker run -it -v /mnt/code/:/code 122.114.40.73:5001/django:1.2.3 /bin/bash
+
+6：		查看镜像名字	
+			docker images [options "o">] [name]
+			docker search 镜像名字
+
+7:	运行同步课堂的第一个命令：
+			docker run -it --rm --net=host -v /mnt/code/:/code 122.114.40.73:5001/django:1.8.7 python /code/first-django/tbktdj/manage.py runserver 0.0.0.0:8080
+			
+	7.1： 创建名字启动docker
+		docker create --name media -it --net=host -v /mnt/code/:/code 122.114.40.73:5001/django:1.8.7 python /code/GitProject/tbkt_media/manage.py runserver 0.0.0.0:808
+		按照名字启动docker：docker restart media
+		查看改项目的运行日志: docker logs -f --tail=100 项目名称
+		
+			
+7：也可以这样下载镜像
+		1）win + R
+		输入：\\192.168.0.130 点击确定后选择要使用 的镜像，进行复制，复制到docker的共享目录下Work
+		2）进入容器  docker-machine.exe  ssh dev 
+			进入容器中的共享目录，ls， 找到你粘贴的镜像，
+			cat django1_2_3.tar.gz |docker load
+		即下载成功
+		
+		
+8创建容器
+docker-machine create --driver virtualbox --engine-insecure-registry 122.114.40.73:5001 dev
+
+9 下载镜像
+docker pull 122.114.40.73:5001/django:1.8.7
+
+10 设置共享目录(现在vbox 里面设置共享文件夹路径，不能选自动挂载)
+sudo mkdir -p /mnt/code
+sudo mount -t vboxsf share /mnt/code 
+
+9查看按名字启动docker的日志：
+docker logs -f --tail=100  项目名称
+
+10: docker.sh 启动多个项目，并可以映射到本地
+	docker-machine start dev
+docker-machine ssh dev "docker start apiyy media"
+docker-machine ssh dev -L :8005:localhost:8005 -L :808:localhost:808
+
+11:查看当前docker环境下运行过的进程（项目）
+docker ps -a
+
+12:杀出进程，或删除别名
+docker rm -f 进程号
+
+13:通过容器名进入容器
+docker exec -it yy_api bash
+
+
+
+docker 删除所有停止运行的容器
+docker rm $(docker ps -a -q)
+
+
+
